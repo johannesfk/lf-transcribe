@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "lf-transcribe"
+version = "0.1.0"
+description = ""
+authors = ["Johannes Farmer Knudsen <9113020+johannesfk@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10.0 <3.11.0"
+faster-whisper = {url = "https://github.com/SYSTRAN/faster-whisper/archive/refs/heads/master.tar.gz"}
+
+[[tool.poetry.source]]
+name = "pytorch-gpu-src"
+url = "https://download.pytorch.org/whl/cu118"
+priority = "explicit"
+
+[tool.poetry.plugins.dotenv]
+location = ".env"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
