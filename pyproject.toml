@@ -8,6 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.10.0 <3.11.0"
 faster-whisper = {url = "https://github.com/SYSTRAN/faster-whisper/archive/refs/heads/master.tar.gz"}
+spacy = {extras = ["cuda127"], version = "^3.8.2"}
+transformers = "^4.46.0"
+torch = "^2.5.0"
+scipy = "^1.14.1"
+numpy = ">=2.0.0 <2.1.0"
 
 [[tool.poetry.source]]
 name = "pytorch-gpu-src"
