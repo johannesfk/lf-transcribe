@@ -1,27 +1,17 @@
-[tool.poetry]
+[project]
 name = "lf-transcribe"
 version = "0.1.0"
 description = ""
-authors = ["Johannes Farmer Knudsen <9113020+johannesfk@users.noreply.github.com>"]
+authors = [
+  {name = "Johannes Farmer Knudsen", email = "9113020+johannesfk@users.noreply.github.com>"}
+]
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = ">=3.10.0 <3.11.0"
-faster-whisper = {url = "https://github.com/SYSTRAN/faster-whisper/archive/refs/heads/master.tar.gz"}
-spacy = {extras = ["cuda127"], version = "^3.8.2"}
-transformers = "^4.46.0"
-torch = "^2.5.0"
-scipy = "^1.14.1"
-numpy = ">=2.0.0 <2.1.0"
-
-[[tool.poetry.source]]
-name = "pytorch-gpu-src"
-url = "https://download.pytorch.org/whl/cu118"
-priority = "explicit"
-
-[tool.poetry.plugins.dotenv]
-location = ".env"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.11, <3.12"
+dependencies = [
+  "transformers>=4.46.0",
+  "torch>=2.5.0",
+  "scipy>=1.14.1",
+  "spacy[cuda12x]>=3.8.3",
+  "numpy>=1.26.4",
+  "faster-whisper>=1.1.1",
+]

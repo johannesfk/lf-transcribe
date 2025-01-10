@@ -28,8 +28,8 @@ class TranscriptProcessor:
         try:
             if language == 'en':
                 self.nlp = spacy.load('en_core_web_trf')
-            elif language == 'da':
-                self.nlp = spacy.load('da_core_news_trf')
+            else:
+                self.nlp = spacy.load('xx_sent_ud_sm')
             # Add more languages as needed
         except OSError:
             raise ValueError(f"Please install the required language model: python -m spacy download {language}_core_news_sm")
