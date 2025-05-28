@@ -78,7 +78,7 @@ def process_audio(
                 f.write(f"{text}\n")
 
 if __name__ == "__main__":
-    audio_file = "in.mp3"
+    audio_file = "2025-05-21-AUDACITY-Come-Out-Of-Her-My-People-part-2.mp3"
     model_size = "large-v2"  # Try smaller model size if still having memory issues
     
     process_audio(

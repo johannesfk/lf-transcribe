@@ -236,7 +236,7 @@ if __name__ == "__main__":
         torch.cuda.empty_cache()
 
     # Read transcript text from txt file
-    with open('transcripts/transcribe-in.txt', 'r') as file:
+    with open('transcripts/transcribe-2025-05-21-AUDACITY-Come-Out-Of-Her-My-People-part-2.txt', 'r') as file:
         sample_transcript = file.read()
     
     # Initialize processor for English
@@ -248,5 +248,5 @@ if __name__ == "__main__":
     print(processed_text)
 
     # Save the processed text to a file
-    with open('transcripts/processed-out.txt', 'w') as file:
+    with open('transcripts/processed-2025-05-21-AUDACITY-Come-Out-Of-Her-My-People-part-2.txt', 'w') as file:
         file.write(processed_text)
