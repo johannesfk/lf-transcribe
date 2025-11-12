@@ -14,4 +14,10 @@ dependencies = [
   "spacy[cuda12x]>=3.8.3",
   "numpy>=1.26.4",
   "faster-whisper>=1.1.1",
+  "xx-sent-ud-sm",
+  "en-core-web-trf",
 ]
+
+[tool.uv.sources]
+xx-sent-ud-sm = { url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.8.0/xx_sent_ud_sm-3.8.0-py3-none-any.whl" }
+en-core-web-trf = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.8.0/en_core_web_trf-3.8.0-py3-none-any.whl" }
