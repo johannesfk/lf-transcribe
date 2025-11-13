@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import logging
-import time
 from dataclasses import dataclass
-from typing import Iterable, Optional
+from typing import Optional
 
 from jiwer import wer as jiwer_wer
 

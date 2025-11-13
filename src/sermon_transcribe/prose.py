@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass
 from typing import List, Optional
 
-from .asr import ASRResult, Segment
+from .asr import Segment
 
 logger = logging.getLogger(__name__)
 
