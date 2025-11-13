@@ -11,10 +11,6 @@ from pydantic import BaseModel, Field, ValidationError, field_validator
 ComputeType = Literal["float16", "int8_float16", "int8"]
 
 
-class AudioConfig(BaseModel):
-    input_paths: list[str]
-
-
 class VADConfig(BaseModel):
     enabled: bool = True
     segment_len_s: float = 28.0
@@ -29,7 +25,6 @@ class ASRConfig(BaseModel):
     language: str = "en"
     task: Literal["transcribe", "translate"] = "transcribe"
     beam_size: int = 1
-    auto_tune_batch: bool = True
     vram_target_gb: float = 0.8
 
     @field_validator("batch_size")
@@ -68,10 +63,6 @@ class ProseConfig(BaseModel):
     polish: ProsePolishConfig = ProsePolishConfig()
 
 
-class DictionaryConfig(BaseModel):
-    path: Optional[str] = None
-
-
 class ExportConfig(BaseModel):
     formats: list[Literal["md", "docx", "json"]] = Field(default_factory=lambda: ["md", "json"])
     out_dir: str = "out"
@@ -81,21 +72,14 @@ class EvalConfig(BaseModel):
     reference_path: Optional[str] = None
 
 
-class PerfConfig(BaseModel):
-    vram_target_gb: float = 0.8
-
-
 class AppConfig(BaseModel):
-    audio: AudioConfig
     vad: VADConfig = VADConfig()
     asr: ASRConfig = ASRConfig()
     alignment: AlignmentConfig = AlignmentConfig()
     diarization: DiarizationConfig = DiarizationConfig()
     prose: ProseConfig = ProseConfig()
-    dictionary: DictionaryConfig = DictionaryConfig()
     export: ExportConfig = ExportConfig()
     eval: EvalConfig = EvalConfig()
-    perf: PerfConfig = PerfConfig()
 
     @staticmethod
     def load(path: str | Path) -> "AppConfig":

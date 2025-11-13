@@ -5,7 +5,6 @@ from pathlib import Path
 
 import librosa
 import numpy as np
-import soundfile as sf
 
 logger = logging.getLogger(__name__)
 
@@ -26,8 +25,3 @@ def peak_normalize(audio: np.ndarray, peak: float = 0.98) -> np.ndarray:
         logger.debug("Peak-normalizing by scale %.4f", scale)
         audio = audio * scale
     return audio
-
-
-def save_wav(path: str | Path, audio: np.ndarray, sr: int = 16000) -> None:
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    sf.write(str(path), audio, sr)
