@@ -1,9 +1,24 @@
-*.wav
-*.mp3
-*.mp4
-*.m4a
-*.aac
-*.ogg
-transcripts/*
-.env
-.env
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+.venv/
+
+# uv
+.uv/
+
+# IDE
+.vscode/
+.idea/
+
+# Data & outputs
+out/
+artifacts/
+models/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,17 +1,63 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
 [project]
-name = "lf-transcribe"
+name = "sermon-transcribe"
 version = "0.1.0"
-description = ""
-authors = [
-  {name = "Johannes Farmer Knudsen", email = "9113020+johannesfk@users.noreply.github.com>"}
-]
+description = "8GB-friendly long-form sermon transcription with WhisperX + Faster-Whisper, alignment, optional diarization, and prose formatting."
 readme = "README.md"
-requires-python = ">=3.11, <3.12"
-dependencies = [
-  "transformers>=4.46.0",
-  "torch>=2.5.0",
-  "scipy>=1.14.1",
-  "spacy[cuda12x]>=3.8.3",
-  "numpy>=1.26.4",
-  "faster-whisper>=1.1.1",
+requires-python = ">=3.12,<3.14"
+authors = [
+  { name = "Your Team" }
 ]
+license = { text = "MIT" }
+dependencies = [
+  "whisperx>=3.7.0",
+  "faster-whisper>=1.0.0",
+  "torch>=2.2.0,<2.9.0",
+  "torchaudio>=2.2.0,<2.9.0",
+  "pydantic>=2.7",
+  "typer[all]>=0.12.3",
+  "rich>=13.7",
+  "tqdm>=4.66",
+  "soundfile>=0.12",
+  "librosa>=0.10",
+  "numpy>=1.26",
+  "jiwer>=3.0",
+  "python-docx>=1.1.0",
+  "PyYAML>=6.0",
+  "huggingface_hub>=0.24",
+  "nvidia-ml-py>=12.560.30",
+]
+
+[project.optional-dependencies]
+diarization = [
+  "pyannote.audio>=3.1"
+]
+granite = [
+  "transformers>=4.52.4",
+  "peft>=0.11.1",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu129", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+torchaudio = [
+  { index = "pytorch-cu129", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+
+[project.scripts]
+sermon-transcribe = "sermon_transcribe.cli:app"
+
+[tool.uv]
+# Using uv as the project manager; no extra config required here.
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sermon_transcribe"]
