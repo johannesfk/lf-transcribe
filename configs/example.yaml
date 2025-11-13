@@ -1,0 +1,51 @@
+audio:
+  input_paths: ["sermons/2025-10-12.wav"]
+
+vad:
+  enabled: true
+  segment_len_s: 28.0
+  overlap_s: 1.5
+
+asr:
+  model_id: "openai/whisper-large-v3"
+  backend: "ctranslate2"
+  compute_type: "float16" # fallback: int8_float16, int8
+  batch_size: 8
+  language: "en"
+  task: "transcribe"
+  beam_size: 1
+  auto_tune_batch: true
+  vram_target_gb: 0.8
+
+alignment:
+  enabled: true
+
+diarization:
+  enabled: false
+  hf_token_env: null
+
+prose:
+  format:
+    enabled: true
+    sentence_gap_s: 0.5
+    paragraph_gap_s: 2.5
+    itn_mode: "safe"
+    max_sentences_per_paragraph: 6
+    discourse_starters: ["Now", "So", "Let’s", "In closing"]
+  polish:
+    enabled: false
+    engine: "none"
+    max_diff_ratio: 0.07
+
+dictionary:
+  path: null
+
+export:
+  formats: ["md", "json"]
+  out_dir: "out"
+
+eval:
+  reference_path: null
+
+perf:
+  vram_target_gb: 0.8
