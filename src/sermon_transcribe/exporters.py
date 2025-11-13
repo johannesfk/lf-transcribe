@@ -6,8 +6,8 @@ from pathlib import Path
 from typing import Iterable, List, Optional
 
 from docx import Document
+from .asr import ASRResult  
 
-from .asr import ASRResult, Segment
 from .prose import Paragraph
 
 logger = logging.getLogger(__name__)

@@ -14,7 +14,7 @@ An 8GB‑friendly, long‑form sermon transcription tool built on WhisperX + Fas
 ## Requirements
 
 - Linux with NVIDIA GPU (8GB VRAM target)
-- Python 3.10+
+- Python 3.12+
 - CUDA-compatible PyTorch
 - uv as the project manager: https://docs.astral.sh/uv/
 
