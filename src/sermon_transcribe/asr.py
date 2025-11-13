@@ -12,6 +12,9 @@ from .config import AppConfig
 
 logger = logging.getLogger(__name__)
 
+# Global variable to track baseline GPU memory
+_baseline_gpu_memory_mb: Optional[float] = None
+
 
 @dataclass
 class Segment:
@@ -29,10 +32,37 @@ class ASRResult:
     peak_vram_gb: float
 
 
-def _peak_vram_gb() -> float:
-    if not torch.cuda.is_available():
+def _get_gpu_memory_mb() -> float:
+    """Get current GPU memory usage in MB using pynvml (works for all CUDA libraries)."""
+    try:
+        import pynvml
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        pynvml.nvmlShutdown()
+        return info.used / (1024 ** 2)
+    except Exception:
+        # Fallback to torch if pynvml fails
+        if torch.cuda.is_available():
+            return torch.cuda.memory_allocated(0) / (1024 ** 2)
         return 0.0
-    return torch.cuda.max_memory_allocated() / (1024 ** 3)
+
+
+def _reset_peak_vram() -> None:
+    """Record baseline GPU memory usage."""
+    global _baseline_gpu_memory_mb
+    _baseline_gpu_memory_mb = _get_gpu_memory_mb()
+
+
+def _peak_vram_gb() -> float:
+    """Get peak VRAM usage since last reset, in GB."""
+    global _baseline_gpu_memory_mb
+    if _baseline_gpu_memory_mb is None:
+        return 0.0
+    
+    current_mb = _get_gpu_memory_mb()
+    peak_mb = current_mb - _baseline_gpu_memory_mb
+    return max(0.0, peak_mb / 1024)
 
 
 def transcribe_with_whisperx(audio: Any, cfg: AppConfig, progress_callback: Optional[Callable[[float, float], None]] = None) -> ASRResult:
@@ -136,6 +166,10 @@ def transcribe_with_whisperx(audio: Any, cfg: AppConfig, progress_callback: Opti
         model_id = tail  # e.g., "large-v3"
 
     logger.info("Loading ASR model %s on %s (%s)", model_id, device, cfg.asr.compute_type)
+    
+    # Record baseline GPU memory before loading model
+    _reset_peak_vram()
+    
     fw = WhisperModel(model_id, device=device, compute_type=cfg.asr.compute_type)
 
     # Calculate total duration for progress tracking
