@@ -15,8 +15,8 @@ __pycache__/
 
 # Data & outputs
 out/
-sermons/
-!sermons/sample*
+audio/*
+!audio/sample*.flac
 artifacts/
 models/
 *.log
