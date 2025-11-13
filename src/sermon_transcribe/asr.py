@@ -4,7 +4,7 @@ import logging
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Callable
+from typing import Any, Dict, List, Optional, Callable
 
 import torch
 
@@ -29,50 +29,10 @@ class ASRResult:
     peak_vram_gb: float
 
 
-def _cuda_vram_gb() -> Tuple[float, float]:
-    if not torch.cuda.is_available():
-        return 0.0, 0.0
-    free_b, total_b = torch.cuda.mem_get_info()
-    return free_b / (1024 ** 3), total_b / (1024 ** 3)
-
-
 def _peak_vram_gb() -> float:
     if not torch.cuda.is_available():
         return 0.0
     return torch.cuda.max_memory_allocated() / (1024 ** 3)
-
-
-def _try_batch_size(transcriber, audio, batch_size: int, language: str) -> bool:
-    try:
-        _ = transcriber.transcribe(audio, batch_size=batch_size, language=language)
-        return True
-    except RuntimeError as e:
-        if "out of memory" in str(e).lower():
-            logger.warning("OOM at batch_size=%d; reducing", batch_size)
-            torch.cuda.empty_cache()
-            return False
-        raise
-
-
-def _auto_tune_batch(transcriber, audio, cfg: AppConfig, max_trials: int = 5) -> int:
-    bs = cfg.asr.batch_size
-    trials = 0
-    while trials < max_trials and bs >= 1:
-        ok = _try_batch_size(transcriber, audio[: min(16000 * 30, len(audio))], bs, cfg.asr.language)
-        if ok:
-            free_gb, total_gb = _cuda_vram_gb()
-            logger.info("Batch %d ok; free VRAM: %.2f/%.2f GB", bs, free_gb, total_gb)
-            # Ensure headroom; if too little, reduce
-            if free_gb < cfg.asr.vram_target_gb and bs > 1:
-                bs = max(1, bs // 2)
-                trials += 1
-            else:
-                break
-        else:
-            bs = max(1, bs // 2)
-            trials += 1
-    assert bs >= 1, "Auto-tuned batch size must be >=1"
-    return bs
 
 
 def transcribe_with_whisperx(audio: Any, cfg: AppConfig, progress_callback: Optional[Callable[[float, float], None]] = None) -> ASRResult:

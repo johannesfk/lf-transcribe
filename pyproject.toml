@@ -48,9 +48,6 @@ explicit = true
 torch = [
   { index = "pytorch-cu129", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
 ]
-torchvision = [
-  { index = "pytorch-cu129", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
-]
 torchaudio = [
   { index = "pytorch-cu129", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
 ]
