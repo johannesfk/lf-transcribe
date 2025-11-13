@@ -49,7 +49,6 @@ def transcribe(
     total_duration = len(audio) / sample_rate
     
     # Check if model is cached
-    from pathlib import Path
     model_id = cfg.asr.model_id
     if cfg.asr.backend.lower() in {"ctranslate2", "faster_whisper", "faster-whisper"}:
         tail = model_id.split("/")[-1]
